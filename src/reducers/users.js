@@ -4,7 +4,7 @@ import {
     EDIT_USER_ROW,
     REMOVE_USER_ROW,
     SAVE_USER_ROW,
-    SAVE_TABLE
+    SAVE_TABLE, CHANGE_SEARCH_NAME
 } from "../actions/users";
 import { initialState } from "./rootReducer";
 import LocalStorage from "../utils/LocalStorage";
@@ -78,6 +78,13 @@ function saveTable(state, action) {
     };
 }
 
+function changeSearchName(state, action) {
+    return {
+        ...state,
+        searchName: action.value
+    }
+}
+
 export default function users(state = initialState, action) {
     switch(action.type) {
         case ADD_USER:
@@ -89,9 +96,11 @@ export default function users(state = initialState, action) {
         case CHANGE_USER_ROW:
             return changeUserRow(state, action);
         case SAVE_USER_ROW:
-                return saveUserRow(state, action);
+            return saveUserRow(state, action);
         case SAVE_TABLE:
-            return saveTable(state, action)
+            return saveTable(state, action);
+        case CHANGE_SEARCH_NAME:
+            return changeSearchName(state, action);
         default: return state;
     }
 }

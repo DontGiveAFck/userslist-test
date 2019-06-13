@@ -4,7 +4,8 @@ import LocalStorage from "../utils/LocalStorage";
 
 export const initialState = {
     users: LocalStorage.getValueFromLocalStorage('users') || [],
-    isSaved: true
+    isSaved: true,
+    searchName: ''
 };
 
 const rootReducer = usersReducer;

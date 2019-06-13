@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header as SemanticHeader } from 'semantic-ui-react';
 import { HEADER } from "../../constants/constants";
-
+import './Header.css'
 const cn = 'Header';
 
 export default class Header extends React.Component{

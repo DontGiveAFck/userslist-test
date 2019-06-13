@@ -1,13 +1,15 @@
 import React from 'react';
 import {Table} from "semantic-ui-react";
-import {TableRow, Menu, Icon, Button} from "semantic-ui-react";
+import {TableRow, Menu, Icon, Button, Input, Message} from "semantic-ui-react";
 import {
     TABLE_AGE,
     TABLE_EMAIL,
     TABLE_NAME,
     TABLE_POSITION,
     BUTTON_ADD_ROW,
-    BUTTON_SAVE_TABLE, TABLE_ACTIONS
+    BUTTON_SAVE_TABLE,
+    TABLE_ACTIONS,
+    SEARCHNAME_PLACEHOLDER
 } from "../../constants/constants";
 import MainTableRow from '../MainTableRow/MainTableRow';
 import {
@@ -16,8 +18,10 @@ import {
     editUserRow,
     changeUserRow,
     saveUserRow,
-    saveTable
+    saveTable,
+    changeSearchName
 } from '../../actions/users'
+import { filterUserByName } from '../../utils/Filter'
 import {connect} from "react-redux";
 
 const cn = 'MainTable';
@@ -56,12 +60,17 @@ class MainTable extends React.Component {
             removeUserRow,
             editUserRow,
             changeUserRow,
-            saveUserRow
+            saveUserRow,
+            searchName
         } = this.props;
 
-        return users ? (
+        const filteredUsers = searchName ?
+            filterUserByName(users, searchName) :
+            users;
+
+        return  (
             <Table.Body>
-                {users.map((user, index) =>
+                { filteredUsers.length ? filteredUsers.map((user, index) =>
                     <MainTableRow
                         rowData={user}
                         index={index}
@@ -70,56 +79,65 @@ class MainTable extends React.Component {
                         changeUserRow={changeUserRow}
                         saveUserRow={saveUserRow}
                     />
-                )}
+                ) : <Table.Row>
+                        <Table.Cell><div className='MainTable-Empty'>
+                            <Message>
+                                <Message.Header>...</Message.Header>
+                            </Message>
+                        </div></Table.Cell>
+                    </Table.Row>}
             </Table.Body>
-        ) : ''
+        );
     };
 
     getTableFooter = () => {
-        const {addUser, saveTable, isSaved} = this.props;
+        const {
+            addUser,
+            saveTable,
+            isSaved,
+            searchName,
+            changeSearchName
+        } = this.props;
 
         return (
             <Table.Footer>
                 <Table.Row>
                     <Table.HeaderCell colSpan='5'>
-                        <Button
-                            color='blue'
-                            onClick={addUser}
-                        >
-                            {BUTTON_ADD_ROW}
-                        </Button>
-                        <Button
-                            color='blue'
-                            onClick={saveTable}
-                            disabled={isSaved}
-                        >
-                            {BUTTON_SAVE_TABLE}
-                        </Button>
-                        <Menu floated='right' pagination>
-                            <Menu.Item as='a' icon>
-                                <Icon name='chevron left' />
-                            </Menu.Item>
-                            <Menu.Item as='a'>1</Menu.Item>
-                            <Menu.Item as='a'>2</Menu.Item>
-                            <Menu.Item as='a'>3</Menu.Item>
-                            <Menu.Item as='a'>4</Menu.Item>
-                            <Menu.Item as='a' icon>
-                                <Icon name='chevron right' />
-                            </Menu.Item>
-                        </Menu>
+                        <div className="MainTable-Actions">
+                            <Button
+                                color='blue'
+                                onClick={addUser}
+                            >
+                                {BUTTON_ADD_ROW}
+                            </Button>
+                            <Button
+                                color='blue'
+                                onClick={saveTable}
+                                disabled={isSaved}
+                            >
+                                {BUTTON_SAVE_TABLE}
+                            </Button>
+                            <Input
+                                onChange={
+                                    (e, data) => changeSearchName(data.value)
+                                }
+                                value={searchName}
+                                placeholder={SEARCHNAME_PLACEHOLDER}
+                            />
+                        </div>
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>
         );
     };
-
 }
 
 const mapStateToProps = (state) => {
-    const { users = [], isSaved = true} = state;
+    const { users = [], isSaved = true, searchName = ''} = state;
     return {
         users,
-        isSaved
+        isSaved,
+        searchName
     }
 };
 
@@ -136,7 +154,9 @@ const mapDispatchToProps = dispatch => {
         saveUserRow: (index) =>
             dispatch(saveUserRow(index)),
         saveTable: () =>
-            dispatch(saveTable())
+            dispatch(saveTable()),
+        changeSearchName: (value) =>
+            dispatch(changeSearchName(value))
     }
 };
 

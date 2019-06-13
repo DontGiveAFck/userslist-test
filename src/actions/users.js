@@ -51,3 +51,12 @@ export const saveTable = () => {
         type: SAVE_TABLE
     }
 };
+
+export const CHANGE_SEARCH_NAME = 'CHANGE_SEARCH_NAME';
+
+export const changeSearchName = (value) => {
+    return {
+        type: CHANGE_SEARCH_NAME,
+        value
+    }
+};

@@ -1,0 +1,9 @@
+.MainTable-Actions {
+    display: inline-flex;
+}
+.MainTable-PaginationMenu {
+    display: inline-flex;
+}
+.MainTable-Empty {
+    width: 100%;
+}
