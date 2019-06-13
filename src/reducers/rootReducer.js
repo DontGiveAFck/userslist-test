@@ -2,7 +2,8 @@ import usersReducer from './users'
 import { createStore, combineReducers } from "redux";
 
 export const initialState = {
-    users: []
+    users: [],
+    isSaved: true
 };
 
 const rootReducer = usersReducer;

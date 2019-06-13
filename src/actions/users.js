@@ -43,3 +43,11 @@ export const saveUserRow = (index) => {
         index,
     }
 };
+
+export const SAVE_TABLE = 'SAVE_TABLE';
+
+export const saveTable = () => {
+    return {
+        type: SAVE_TABLE
+    }
+};

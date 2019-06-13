@@ -3,9 +3,11 @@ import {
     CHANGE_USER_ROW,
     EDIT_USER_ROW,
     REMOVE_USER_ROW,
-    SAVE_USER_ROW
+    SAVE_USER_ROW,
+    SAVE_TABLE
 } from "../actions/users";
 import { initialState } from "./rootReducer";
+import LocalStorage from "../utils/LocalStorage";
 
 function addUserRow(state, action) {
     const newUser = {
@@ -17,7 +19,8 @@ function addUserRow(state, action) {
 
     return {
         ...state,
-        users: [...state.users, newUser]
+        users: [...state.users, newUser],
+        isSaved: false
     };
 }
 
@@ -38,7 +41,8 @@ function editUserRow(state, action) {
 
     return {
         ...state,
-        users: newUsers
+        users: newUsers,
+        isSaved: false
     };
 }
 
@@ -60,7 +64,16 @@ function saveUserRow(state, action) {
 
     return {
         ...state,
-        users: newUsers
+        users: newUsers,
+        isSaved: false
+    };
+}
+
+function saveTable(state, action) {
+    LocalStorage.setValueInLocalStorage('users', state.users);
+    return {
+        ...state,
+        isSaved: true
     };
 }
 
@@ -76,6 +89,8 @@ export default function users(state = initialState, action) {
             return changeUserRow(state, action);
         case SAVE_USER_ROW:
                 return saveUserRow(state, action);
+        case SAVE_TABLE:
+            return saveTable(state, action)
         default: return state;
     }
 }

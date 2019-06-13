@@ -10,7 +10,14 @@ import {
     BUTTON_SAVE_TABLE, TABLE_ACTIONS
 } from "../../constants/constants";
 import MainTableRow from '../MainTableRow/MainTableRow';
-import {addUserRow, removeUserRow, editUserRow, changeUserRow, saveUserRow} from '../../actions/users'
+import {
+    addUserRow,
+    removeUserRow,
+    editUserRow,
+    changeUserRow,
+    saveUserRow,
+    saveTable
+} from '../../actions/users'
 import {connect} from "react-redux";
 
 const cn = 'MainTable';
@@ -125,7 +132,9 @@ const mapDispatchToProps = dispatch => {
         changeUserRow: (value, index, field) =>
             dispatch(changeUserRow(value, index, field)),
         saveUserRow: (index) =>
-            dispatch(saveUserRow(index))
+            dispatch(saveUserRow(index)),
+        saveTable: () =>
+            dispatch(saveTable())
     }
 };
 
