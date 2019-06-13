@@ -1,17 +1,19 @@
 import React from 'react';
-import './App.css';
-import { Table, TableCell } from "semantic-ui-react";
-
+import { Table } from "semantic-ui-react";
 const cn = 'MainTable-MainTableRow';
 
-class MainTableRow extends React.Component {
-    render () {
-        return (
-            <div className={cn}>
+export default class MainTableRow extends React.Component {
 
-            </div>
+    render () {
+        const { name, age, position, email } = this.props.rowData;
+
+        return (
+            <Table.Row>
+                <Table.Cell>{name}</Table.Cell>
+                <Table.Cell>{age}</Table.Cell>
+                <Table.Cell>{position}</Table.Cell>
+                <Table.Cell>{email}</Table.Cell>
+            </Table.Row>
         );
     }
 }
-
-export default MainTableRow;
