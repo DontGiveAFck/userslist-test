@@ -1,7 +1,7 @@
 export default class LocalStorage {
 
     static getValueFromLocalStorage = (key) => {
-        return localStorage.getItem(key);
+        return JSON.parse(localStorage.getItem(key));
     };
 
     static setValueInLocalStorage = (key, value) => {

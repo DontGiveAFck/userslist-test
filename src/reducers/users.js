@@ -30,7 +30,8 @@ function removeUserRow(state, action) {
     newUsers.splice(action.index, 1);
     return {
         ...state,
-        users: newUsers
+        users: newUsers,
+        isSaved: false
     };
 }
 

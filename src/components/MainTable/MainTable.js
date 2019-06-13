@@ -76,7 +76,7 @@ class MainTable extends React.Component {
     };
 
     getTableFooter = () => {
-        const {addUser, saveTable} = this.props;
+        const {addUser, saveTable, isSaved} = this.props;
 
         return (
             <Table.Footer>
@@ -91,6 +91,7 @@ class MainTable extends React.Component {
                         <Button
                             color='blue'
                             onClick={saveTable}
+                            disabled={isSaved}
                         >
                             {BUTTON_SAVE_TABLE}
                         </Button>
@@ -115,9 +116,10 @@ class MainTable extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    const { users = [] } = state;
+    const { users = [], isSaved = true} = state;
     return {
-        users
+        users,
+        isSaved
     }
 };
 

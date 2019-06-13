@@ -1,8 +1,9 @@
 import usersReducer from './users'
-import { createStore, combineReducers } from "redux";
+import { createStore } from "redux";
+import LocalStorage from "../utils/LocalStorage";
 
 export const initialState = {
-    users: [],
+    users: LocalStorage.getValueFromLocalStorage('users') || [],
     isSaved: true
 };
 
