@@ -1,14 +1,19 @@
 import React from 'react';
 import {Table} from "semantic-ui-react";
-import {TableRow, Menu, Icon} from "semantic-ui-react";
+import {TableRow, Menu, Icon, Button} from "semantic-ui-react";
 import {TABLE_AGE, TABLE_EMAIL, TABLE_NAME, TABLE_POSITION} from "../../constants/constants";
 import MainTableRow from '../MainTableRow/MainTableRow';
 import LocalStorage from "../../utils/LocalStorage";
+import {addUser} from '../../actions/users'
+import {connect} from "react-redux";
 
 const cn = 'MainTable';
 
-export default class MainTable extends React.Component {
+class MainTable extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
     render () {
         return (
             <div className={cn}>
@@ -45,8 +50,13 @@ export default class MainTable extends React.Component {
     };
 
     getTableFooter = () => {
+        const {addUser} = this.props;
+
         return (
             <Table.Footer>
+                <Button
+                    onClick={addUser}
+                >Добавить</Button>
                 <Table.Row>
                     <Table.HeaderCell colSpan='4'>
                         <Menu floated='right' pagination>
@@ -68,3 +78,19 @@ export default class MainTable extends React.Component {
     };
 
 }
+
+const mapStateToProps = (state) => {
+    const { users = [] } = state;
+    return {
+        users
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addUser: (name, age, position, email) =>
+            dispatch(addUser(name, age, position, email))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainTable);
