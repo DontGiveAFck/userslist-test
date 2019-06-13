@@ -10,7 +10,7 @@ import {
     BUTTON_SAVE_TABLE, TABLE_ACTIONS
 } from "../../constants/constants";
 import MainTableRow from '../MainTableRow/MainTableRow';
-import {addUserRow, removeUserRow} from '../../actions/users'
+import {addUserRow, removeUserRow, editUserRow, changeUserRow, saveUserRow} from '../../actions/users'
 import {connect} from "react-redux";
 
 const cn = 'MainTable';
@@ -44,7 +44,13 @@ class MainTable extends React.Component {
     };
 
     getTableBody = () => {
-        const { users, removeUserRow } = this.props;
+        const {
+            users,
+            removeUserRow,
+            editUserRow,
+            changeUserRow,
+            saveUserRow
+        } = this.props;
 
         return users ? (
             <Table.Body>
@@ -53,6 +59,9 @@ class MainTable extends React.Component {
                         rowData={user}
                         index={index}
                         removeUserRow={removeUserRow}
+                        editUserRow={editUserRow}
+                        changeUserRow={changeUserRow}
+                        saveUserRow={saveUserRow}
                     />
                 )}
             </Table.Body>
@@ -110,7 +119,13 @@ const mapDispatchToProps = dispatch => {
         addUser: () =>
             dispatch(addUserRow()),
         removeUserRow: (index) =>
-            dispatch(removeUserRow(index))
+            dispatch(removeUserRow(index)),
+        editUserRow: (index) =>
+            dispatch(editUserRow(index)),
+        changeUserRow: (value, index, field) =>
+            dispatch(changeUserRow(value, index, field)),
+        saveUserRow: (index) =>
+            dispatch(saveUserRow(index))
     }
 };
 
