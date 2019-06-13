@@ -37,7 +37,7 @@ function addUserRow(state, action) {
 }
 
 function removeUserRow(state, action) {
-    const {users} = state;
+    const { users } = state;
     const newUsers = users.filter(user => user.uniqueId !== action.index);
     const newTotalUsers = newUsers.length;
     const newTotalPages = Math.ceil(newTotalUsers / USERS_PER_PAGE);
@@ -56,8 +56,7 @@ function removeUserRow(state, action) {
 }
 
 function editUserRow(state, action) {
-    const {users: oldUsers} = state;
-    const newUsers = oldUsers.slice();
+    const newUsers = [...state.users];
     const editedUser = newUsers.find(user => user.uniqueId === action.index);
     editedUser.active = true;
 
@@ -82,7 +81,8 @@ function changeUserRow(state, action) {
 }
 
 function saveUserRow(state, action) {
-    const userForSave = state.users.find(user => user.uniqueId === action.index);
+    const newUsers = [...state.users];
+    const userForSave = newUsers.find(user => user.uniqueId === action.index);
     const errors = getUserRowErrors(userForSave);
     if (errors.length) {
         return {
@@ -91,8 +91,6 @@ function saveUserRow(state, action) {
         }
     }
 
-    const {users: oldUsers} = state;
-    const newUsers = oldUsers.slice();
     userForSave.active = false;
 
     return {
