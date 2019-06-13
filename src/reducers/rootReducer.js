@@ -8,6 +8,7 @@ export const initialState = {
     searchName: ''
 };
 
+// if only one reducer
 const rootReducer = usersReducer;
 
 export const store = createStore(

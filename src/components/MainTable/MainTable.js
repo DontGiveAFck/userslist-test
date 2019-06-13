@@ -21,8 +21,9 @@ import {
     saveTable,
     changeSearchName
 } from '../../actions/users'
-import { filterUserByName } from '../../utils/Filter'
+import { filterUserByName } from '../../utils/filter'
 import {connect} from "react-redux";
+import './MainTable.css';
 
 const cn = 'MainTable';
 
@@ -44,11 +45,11 @@ class MainTable extends React.Component {
         return (
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>{TABLE_NAME}</Table.HeaderCell>
-                    <Table.HeaderCell>{TABLE_POSITION}</Table.HeaderCell>
-                    <Table.HeaderCell>{TABLE_EMAIL}</Table.HeaderCell>
-                    <Table.HeaderCell>{TABLE_AGE}</Table.HeaderCell>
-                    <Table.HeaderCell>{TABLE_ACTIONS}</Table.HeaderCell>
+                    <Table.HeaderCell className='MainTable-Name'>{TABLE_NAME}</Table.HeaderCell>
+                    <Table.HeaderCell className='MainTable-Position'>{TABLE_POSITION}</Table.HeaderCell>
+                    <Table.HeaderCell className='MainTable-Email'>{TABLE_EMAIL}</Table.HeaderCell>
+                    <Table.HeaderCell className='MainTable-Age'>{TABLE_AGE}</Table.HeaderCell>
+                    <Table.HeaderCell className='MainTable-Actions'>{TABLE_ACTIONS}</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
         );

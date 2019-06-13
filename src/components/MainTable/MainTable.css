@@ -7,3 +7,18 @@
 .MainTable-Empty {
     width: 100%;
 }
+.MainTable-Name {
+    width: 300px;
+}
+.MainTable-Age {
+    width: 203px;
+}
+.MainTable-Position {
+    width: 203px;
+}
+.MainTable-Email {
+    width: 203px;
+}
+.MainTable-Actions {
+    width: 203px;
+}

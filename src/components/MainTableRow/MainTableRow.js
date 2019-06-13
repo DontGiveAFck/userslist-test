@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Icon, Button, Input } from "semantic-ui-react";
-const cn = 'MainTable-MainTableRow';
+import './MainTableRow.css'
 
 export default class MainTableRow extends React.Component {
 
@@ -16,7 +16,7 @@ export default class MainTableRow extends React.Component {
 
         return active ?
             <Table.Row active={active}>
-                <Table.Cell>
+                <Table.Cell className={'MainTableRow-Name'}>
                     <Input
                         value={name}
                         onChange={
@@ -24,7 +24,7 @@ export default class MainTableRow extends React.Component {
                         }
                     />
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className={'MainTableRow-Age'}>
                     <Input
                         value={age}
                         onChange={
@@ -32,7 +32,7 @@ export default class MainTableRow extends React.Component {
                         }
                     />
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className={'MainTableRow-Position'}>
                     <Input
                         value={position}
                         onChange={
@@ -40,7 +40,7 @@ export default class MainTableRow extends React.Component {
                         }
                     />
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className={'MainTableRow-Email'}>
                     <Input
                         value={email}
                         onChange={
@@ -51,11 +51,11 @@ export default class MainTableRow extends React.Component {
                 <Table.Cell>{this.getActionButtons(index)}</Table.Cell>
             </Table.Row> :
                 <Table.Row>
-                <Table.Cell>{name}</Table.Cell>
-                <Table.Cell>{age}</Table.Cell>
-                <Table.Cell>{position}</Table.Cell>
-                <Table.Cell>{email}</Table.Cell>
-                <Table.Cell>{this.getActionButtons(index)}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Name'} >{name}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Age'}>{age}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Position'}>{position}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Email'}>{email}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Actions'}>{this.getActionButtons(index)}</Table.Cell>
             </Table.Row>
         ;
     }
