@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from "semantic-ui-react";
-import {TableRow, Menu, Icon, Button, Input, Message} from "semantic-ui-react";
+import {Button, Input, Message, Menu, Icon} from "semantic-ui-react";
 import {
     TABLE_AGE,
     TABLE_EMAIL,
@@ -10,7 +10,7 @@ import {
     BUTTON_SAVE_TABLE,
     TABLE_ACTIONS,
     SEARCHNAME_PLACEHOLDER
-} from "../../constants/constants";
+} from "../../constants/text";
 import MainTableRow from '../MainTableRow/MainTableRow';
 import {
     addUserRow,
@@ -19,11 +19,13 @@ import {
     changeUserRow,
     saveUserRow,
     saveTable,
-    changeSearchName
+    changeSearchName,
+    onPageClick
 } from '../../actions/users'
 import { filterUserByName } from '../../utils/filter'
 import {connect} from "react-redux";
 import './MainTable.css';
+import {USERS_PER_PAGE} from "../../constants/numberConstants";
 
 const cn = 'MainTable';
 
@@ -62,28 +64,36 @@ class MainTable extends React.Component {
             editUserRow,
             changeUserRow,
             saveUserRow,
+            currentPage,
             searchName
         } = this.props;
 
+        const offset = USERS_PER_PAGE * (currentPage - 1);
+        const usersForRender = [...users].splice(offset, USERS_PER_PAGE);
         const filteredUsers = searchName ?
-            filterUserByName(users, searchName) :
-            users;
+            filterUserByName(usersForRender, searchName) :
+            usersForRender;
 
         return  (
             <Table.Body>
-                { filteredUsers.length ? filteredUsers.map((user, index) =>
-                    <MainTableRow
-                        rowData={user}
-                        index={index}
-                        removeUserRow={removeUserRow}
-                        editUserRow={editUserRow}
-                        changeUserRow={changeUserRow}
-                        saveUserRow={saveUserRow}
-                    />
+                {
+                    filteredUsers.length ? filteredUsers.map((user, index) => {
+                        return (
+                            <MainTableRow
+                                rowData={user}
+                                index={user.uniqueId}
+                                removeUserRow={removeUserRow}
+                                editUserRow={editUserRow}
+                                changeUserRow={changeUserRow}
+                                saveUserRow={saveUserRow}
+                            />
+                        )
+                    }
+
                 ) : <Table.Row>
                         <Table.Cell><div className='MainTable-Empty'>
-                            <Message>
-                                <Message.Header>...</Message.Header>
+                            <Message size='mini'>
+                                ...
                             </Message>
                         </div></Table.Cell>
                     </Table.Row>}
@@ -97,8 +107,10 @@ class MainTable extends React.Component {
             saveTable,
             isSaved,
             searchName,
-            changeSearchName
+            changeSearchName,
+            users
         } = this.props;
+        const isAllUsersSaved = users.every(user => !user.active);
 
         return (
             <Table.Footer>
@@ -114,30 +126,74 @@ class MainTable extends React.Component {
                             <Button
                                 color='blue'
                                 onClick={saveTable}
-                                disabled={isSaved}
+                                disabled={isSaved || !isAllUsersSaved}
                             >
                                 {BUTTON_SAVE_TABLE}
                             </Button>
-                            <Input
-                                onChange={
-                                    (e, data) => changeSearchName(data.value)
-                                }
-                                value={searchName}
-                                placeholder={SEARCHNAME_PLACEHOLDER}
-                            />
+                            <div className={'MainTable-Search'}>
+                                <Input
+                                    onChange={
+                                        (e, data) => changeSearchName(data.value)
+                                    }
+                                    value={searchName}
+                                    placeholder={SEARCHNAME_PLACEHOLDER}
+                                />
+                            </div>
+
+                        </div>
+                        <div>
+                            {this.getPagination()}
                         </div>
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>
         );
     };
+
+    getPagination = () => {
+        const {totalPages, currentPage, onPageClick} = this.props;
+        const pages = new Array(totalPages).fill(0);
+
+        return (
+            <Menu floated='right' pagination>
+                <Menu.Item
+                    as='a'
+                    icon
+                    disabled={currentPage === 1}
+                    onClick={() => onPageClick(currentPage - 1)}
+                >
+                    <Icon name='chevron left' />
+                </Menu.Item>
+                {pages.map((page, index) =>
+                    <Menu.Item
+                        as='a'
+                        active={index + 1 === currentPage}
+                        key={index}
+                        onClick={() => onPageClick(index + 1)}
+                    >
+                        {index + 1}
+                    </Menu.Item>)
+                }
+                <Menu.Item
+                    as='a'
+                    icon
+                    disabled={currentPage === totalPages}
+                    onClick={() => onPageClick(currentPage + 1)}
+                >
+                    <Icon name='chevron right' />
+                </Menu.Item>
+            </Menu>
+        );
+    }
 }
 
 const mapStateToProps = (state) => {
-    const { users = [], isSaved = true, searchName = ''} = state;
+    const { users = [], isSaved = true, searchName = '', totalPages, currentPage} = state;
     return {
         users,
         isSaved,
+        totalPages,
+        currentPage,
         searchName
     }
 };
@@ -157,7 +213,9 @@ const mapDispatchToProps = dispatch => {
         saveTable: () =>
             dispatch(saveTable()),
         changeSearchName: (value) =>
-            dispatch(changeSearchName(value))
+            dispatch(changeSearchName(value)),
+        onPageClick: (number) =>
+            dispatch(onPageClick(number))
     }
 };
 

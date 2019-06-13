@@ -1,6 +1,6 @@
 import React from 'react';
 import { Header as SemanticHeader } from 'semantic-ui-react';
-import { HEADER } from "../../constants/constants";
+import { HEADER } from "../../constants/text";
 import './Header.css'
 const cn = 'Header';
 

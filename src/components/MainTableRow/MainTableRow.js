@@ -24,14 +24,6 @@ export default class MainTableRow extends React.Component {
                         }
                     />
                 </Table.Cell>
-                <Table.Cell className={'MainTableRow-Age'}>
-                    <Input
-                        value={age}
-                        onChange={
-                            (e, data) => this.changeRow(data, index, 'age')
-                        }
-                    />
-                </Table.Cell>
                 <Table.Cell className={'MainTableRow-Position'}>
                     <Input
                         value={position}
@@ -48,13 +40,21 @@ export default class MainTableRow extends React.Component {
                         }
                     />
                 </Table.Cell>
+                <Table.Cell className={'MainTableRow-Age'}>
+                    <Input
+                        value={age}
+                        onChange={
+                            (e, data) => this.changeRow(data, index, 'age')
+                        }
+                    />
+                </Table.Cell>
                 <Table.Cell>{this.getActionButtons(index)}</Table.Cell>
             </Table.Row> :
                 <Table.Row>
                 <Table.Cell className={'MainTableRow-Name'} >{name}</Table.Cell>
-                <Table.Cell className={'MainTableRow-Age'}>{age}</Table.Cell>
                 <Table.Cell className={'MainTableRow-Position'}>{position}</Table.Cell>
                 <Table.Cell className={'MainTableRow-Email'}>{email}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Age'}>{age}</Table.Cell>
                 <Table.Cell className={'MainTableRow-Actions'}>{this.getActionButtons(index)}</Table.Cell>
             </Table.Row>
         ;
@@ -79,7 +79,7 @@ export default class MainTableRow extends React.Component {
                             name='pencil alternate'
                         />}
                         color='green'
-                        key={index}
+                        key={256 - index}
                         onClick={
                             (event) => this.editRow(event, index)
                         }
@@ -89,7 +89,7 @@ export default class MainTableRow extends React.Component {
                             name='save'
                         />}
                         color='green'
-                        key={255 - index}
+                        key={512 - index}
                         onClick={
                             (event) => this.saveRow(event, index)
                         }

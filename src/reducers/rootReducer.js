@@ -1,11 +1,14 @@
-import usersReducer from './users'
+import usersReducer from './usersTable'
 import { createStore } from "redux";
 import LocalStorage from "../utils/LocalStorage";
 
 export const initialState = {
     users: LocalStorage.getValueFromLocalStorage('users') || [],
     isSaved: true,
-    searchName: ''
+    searchName: '',
+    errors: [],
+    totalPages: 1,
+    currentPage: 1
 };
 
 // if only one reducer

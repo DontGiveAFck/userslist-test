@@ -60,3 +60,12 @@ export const changeSearchName = (value) => {
         value
     }
 };
+
+export const ON_PAGE_CLICK = 'ON_PAGE_CLICK';
+
+export const onPageClick = (number) => {
+    return {
+        type: ON_PAGE_CLICK,
+        number
+    }
+};

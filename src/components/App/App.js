@@ -4,6 +4,7 @@ import MainTable from '../MainTable/MainTable';
 import { Provider } from "react-redux";
 import { store } from '../../reducers/rootReducer';
 import Header from '../Header/Header';
+import InlineError from "../Error/Error";
 
 const cn = 'App';
 
@@ -15,6 +16,7 @@ class App extends React.Component{
                 <div className={ cn }>
                     <Header/>
                     <MainTable/>
+                    <InlineError/>
                 </div>
             </Provider>
         );

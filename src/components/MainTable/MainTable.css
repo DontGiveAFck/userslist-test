@@ -20,5 +20,14 @@
     width: 203px;
 }
 .MainTable-Actions {
-    width: 203px;
+    width: 100%;
+}
+
+.MainTable-Search{
+    width: 260px;
+}
+
+/* Semantic-ui ...... */
+.MainTable-Search > .input {
+    width: 100% !important;
 }
