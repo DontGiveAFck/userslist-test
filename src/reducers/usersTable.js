@@ -9,7 +9,7 @@ import {
 import { initialState } from "./rootReducer";
 import LocalStorage from "../utils/LocalStorage";
 import {getUserRowErrors} from "../utils/errors";
-import {USERS_PER_PAGE} from '../constants/numberConstants';
+import {maxFieldLength, USERS_PER_PAGE} from '../constants/numberConstants';
 
 function addUserRow(state, action) {
     const newUser = {
@@ -41,7 +41,6 @@ function removeUserRow(state, action) {
     const newUsers = users.filter(user => user.uniqueId !== action.index);
     const newTotalUsers = newUsers.length;
     const newTotalPages = Math.ceil(newTotalUsers / USERS_PER_PAGE);
-    const isNewCurrentPage = newTotalPages !== state.currentPage;
 
     return {
         ...state,
@@ -49,9 +48,6 @@ function removeUserRow(state, action) {
         isSaved: false,
         errors: [],
         totalPages: newTotalPages,
-        currentPage: isNewCurrentPage ?
-            state.currentPage - 1 :
-            state.currentPage
     };
 }
 
@@ -72,6 +68,10 @@ function changeUserRow(state, action) {
     const newUsers = oldUsers.slice();
     const editedUser = newUsers.find(user => user.uniqueId === action.index);
     editedUser[action.field] = action.value;
+
+    if (action.value.length > maxFieldLength[action.field]) {
+        return state;
+    }
 
     return {
         ...state,

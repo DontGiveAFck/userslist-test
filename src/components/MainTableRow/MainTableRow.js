@@ -48,7 +48,7 @@ export default class MainTableRow extends React.Component {
                         }
                     />
                 </Table.Cell>
-                <Table.Cell>{this.getActionButtons(index)}</Table.Cell>
+                <Table.Cell className={'MainTableRow-Actions'}>{this.getActionButtons(index)}</Table.Cell>
             </Table.Row> :
                 <Table.Row>
                 <Table.Cell className={'MainTableRow-Name'} >{name}</Table.Cell>
