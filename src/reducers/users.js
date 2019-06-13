@@ -1,22 +1,28 @@
 import { combineReducers } from 'redux';
-import { ADD_USER } from "../actions/users";
+import { ADD_USER, REMOVE_USER_ROW } from "../actions/users";
 import { initialState } from "./rootReducer";
 
-function addUser(state, action) {
+function addUserRow(state, action) {
     const newUser = {
-        name: action.name,
-        age: action.age,
-        position: action.position,
+        name: '',
+        age: '',
+        position: '',
     };
-    console.log('added')
+
     return {
         ...state,
         users: [...state.users, newUser]
     };
 }
 
-function removeUser(state, action) {
-
+function removeUserRow(state, action) {
+    const {users: oldUsers} = state;
+    const newUsers = oldUsers.slice();
+    newUsers.splice(action.index, 1);
+    return {
+        ...state,
+        users: newUsers
+    };
 }
 
 function updateUser(state, acton) {
@@ -26,8 +32,9 @@ function updateUser(state, acton) {
 export default function users(state = initialState, action) {
     switch(action.type) {
         case ADD_USER:
-            return addUser();
+            return addUserRow(state, action);
+        case REMOVE_USER_ROW:
+            return removeUserRow(state, action);
         default: return state;
     }
-    return state;
 }

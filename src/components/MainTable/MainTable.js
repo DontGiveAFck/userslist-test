@@ -1,19 +1,22 @@
 import React from 'react';
 import {Table} from "semantic-ui-react";
 import {TableRow, Menu, Icon, Button} from "semantic-ui-react";
-import {TABLE_AGE, TABLE_EMAIL, TABLE_NAME, TABLE_POSITION} from "../../constants/constants";
+import {
+    TABLE_AGE,
+    TABLE_EMAIL,
+    TABLE_NAME,
+    TABLE_POSITION,
+    BUTTON_ADD_ROW,
+    BUTTON_SAVE_TABLE, TABLE_ACTIONS
+} from "../../constants/constants";
 import MainTableRow from '../MainTableRow/MainTableRow';
-import LocalStorage from "../../utils/LocalStorage";
-import {addUser} from '../../actions/users'
+import {addUserRow, removeUserRow} from '../../actions/users'
 import {connect} from "react-redux";
 
 const cn = 'MainTable';
 
 class MainTable extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
     render () {
         return (
             <div className={cn}>
@@ -34,31 +37,47 @@ class MainTable extends React.Component {
                     <Table.HeaderCell>{TABLE_POSITION}</Table.HeaderCell>
                     <Table.HeaderCell>{TABLE_EMAIL}</Table.HeaderCell>
                     <Table.HeaderCell>{TABLE_AGE}</Table.HeaderCell>
+                    <Table.HeaderCell>{TABLE_ACTIONS}</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
         );
     };
 
     getTableBody = () => {
-        const rows = LocalStorage.getValueFromLocalStorage('rows');
+        const { users, removeUserRow } = this.props;
 
-        return rows ? (
+        return users ? (
             <Table.Body>
-                {rows.map(row => <MainTableRow rowData={row}/>)}
+                {users.map((user, index) =>
+                    <MainTableRow
+                        rowData={user}
+                        index={index}
+                        removeUserRow={removeUserRow}
+                    />
+                )}
             </Table.Body>
         ) : ''
     };
 
     getTableFooter = () => {
-        const {addUser} = this.props;
+        const {addUser, saveTable} = this.props;
 
         return (
             <Table.Footer>
-                <Button
-                    onClick={addUser}
-                >Добавить</Button>
                 <Table.Row>
-                    <Table.HeaderCell colSpan='4'>
+                    <Table.HeaderCell colSpan='5'>
+                        <Button
+                            color='blue'
+                            onClick={addUser}
+                        >
+                            {BUTTON_ADD_ROW}
+                        </Button>
+                        <Button
+                            color='blue'
+                            onClick={saveTable}
+                        >
+                            {BUTTON_SAVE_TABLE}
+                        </Button>
                         <Menu floated='right' pagination>
                             <Menu.Item as='a' icon>
                                 <Icon name='chevron left' />
@@ -88,8 +107,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addUser: (name, age, position, email) =>
-            dispatch(addUser(name, age, position, email))
+        addUser: () =>
+            dispatch(addUserRow()),
+        removeUserRow: (index) =>
+            dispatch(removeUserRow(index))
     }
 };
 
